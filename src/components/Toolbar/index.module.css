@@ -1,0 +1,24 @@
+.sidebar_dragger {
+  width: 10px;
+  cursor: ew-resize;
+  border-top: 1px solid #ddd;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  background-color: #fff;
+}
+
+.drawer_wrapper {
+  width: 100%;
+  height: 100%;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.drawer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}

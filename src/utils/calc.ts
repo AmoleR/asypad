@@ -9,21 +9,23 @@ export enum ScreenSizes {
 export function pxToViewportLength(
   value: number,
   unit: ScreenSizes,
-  window: Window
+  main: HTMLDivElement | null
 ): number {
+  if (!main) return 0;
+
   let baseSize: number = 0;
   switch (unit) {
     case ScreenSizes.VH:
-      baseSize = window.innerHeight;
+      baseSize = main.clientHeight;
       break;
     case ScreenSizes.VW:
-      baseSize = window.innerWidth;
+      baseSize = main.clientWidth;
       break;
     case ScreenSizes.VMAX:
-      baseSize = Math.max(window.innerWidth, window.innerHeight);
+      baseSize = Math.max(main.clientHeight, main.clientWidth);
       break;
     case ScreenSizes.VMIN:
-      baseSize = Math.min(window.innerWidth, window.innerHeight);
+      baseSize = Math.min(main.clientHeight, main.clientWidth);
       break;
     case ScreenSizes.PX:
       baseSize = 100;

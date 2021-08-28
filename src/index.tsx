@@ -7,7 +7,7 @@ import "antd/dist/antd.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <div id="main">
+    <div id="wrapper">
       <Canvas />
     </div>
   </React.StrictMode>,
