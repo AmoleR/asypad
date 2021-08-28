@@ -1,8 +1,9 @@
-import { FC, SVGProps, createElement, useState } from "react";
+import { FC, SVGProps, createElement, useContext } from "react";
 import { Move, Point } from "images/toolbar";
 import classes from "./content.module.css";
 import clsx from "clsx";
 import { Tooltip, Row, Col } from "antd";
+import { ButtonContext } from "context";
 
 const buttons: {
   icon: FC<SVGProps<SVGSVGElement>>;
@@ -23,7 +24,8 @@ const buttons: {
 
 const Content: FC<{ width?: number }> = ({ width }) => {
   const buttonWidth = Math.min(60, ((width || 0) * 2) / 5);
-  const [selected, setSelected] = useState<string>("Move");
+  const { current: selected, setCurrent: setSelected } =
+    useContext(ButtonContext);
 
   return (
     <Row className={classes.centered_row} gutter={24}>
