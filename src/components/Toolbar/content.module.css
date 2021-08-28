@@ -1,0 +1,30 @@
+.button {
+  border: 1px solid red;
+  border-radius: 10%;
+  cursor: pointer;
+  margin: 8px auto;
+}
+
+.button_selected {
+  background-color: chartreuse;
+}
+
+.toolbar_grid {
+  display: grid;
+  gap: 10px;
+}
+
+.centered_row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.text_align_center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}

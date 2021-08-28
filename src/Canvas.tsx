@@ -11,7 +11,7 @@ const Canvas: FC<{}> = () => {
         <text>Content</text>
       </svg>
       <Toolbar
-        minWidth={{ number: 50, unit: ScreenSizes.PX }}
+        minWidth={{ number: 100, unit: ScreenSizes.PX }}
         maxWidth={{ number: 50, unit: ScreenSizes.VW }}
         closable={false}
         mask={false}

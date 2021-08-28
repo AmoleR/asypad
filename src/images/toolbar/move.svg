@@ -1,0 +1,13 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="-11 -10 47 48"
+>
+  <rect
+    x="12.5"
+    y="13.6"
+    transform="matrix(0.9221 -0.3871 0.3871 0.9221 -5.7605 6.5909)"
+    width="2"
+    height="8"
+  />
+  <polygon points="9.2,7.3 9.2,18.5 12.2,15.6 12.6,15.5 17.4,15.5 " />
+</svg>

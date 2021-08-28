@@ -1,13 +1,13 @@
 .sidebar_dragger {
   width: 10px;
   cursor: ew-resize;
-  border-top: 1px solid #ddd;
+  touch-action: none;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   z-index: 100;
-  background-color: #fff;
+  background-color: transparent;
 }
 
 .drawer_wrapper {
@@ -21,4 +21,16 @@
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.calculator_button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: none;
+  background-color: aquamarine;
+  cursor: pointer;
+  font-size: 150%;
+  height: 50px;
 }

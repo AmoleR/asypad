@@ -11,6 +11,8 @@ import { Drawer, DrawerProps } from "antd";
 import classes from "./index.module.css";
 import { ScreenSizes, pxToViewportLength } from "utils/calc";
 import { isTouchEvent } from "utils/events";
+import Content from "./Content";
+import { SyncOutlined } from "@ant-design/icons";
 
 let isResizing = false;
 
@@ -24,7 +26,6 @@ export type ToolbarProps = DrawerProps & {
 };
 
 const Toolbar: FC<ToolbarProps> = ({
-  children,
   minWidth,
   maxWidth,
   mainRef,
@@ -37,8 +38,8 @@ const Toolbar: FC<ToolbarProps> = ({
   const getAppropriateWidth = (width: number): number =>
     Math.max(Math.min(getLength(maxWidth), width), getLength(minWidth));
 
-  const [drawerWidth, setDrawerWidth] =
-    useState<string | number | undefined>(undefined);
+  const [drawerWidth, setDrawerWidth] = useState<number | undefined>(undefined);
+  const [showPoints, setShowPoints] = useState<boolean>(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cbHandleMouseMove = useCallback(handleMousemove, []);
@@ -47,7 +48,7 @@ const Toolbar: FC<ToolbarProps> = ({
 
   useEffect(() => {
     if (!!props.width) setDrawerWidth(getAppropriateWidth(props.width));
-    else setDrawerWidth(getAppropriateWidth(50));
+    else setDrawerWidth(getAppropriateWidth(100));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -100,7 +101,6 @@ const Toolbar: FC<ToolbarProps> = ({
       <div className={classes.drawer}>
         <Drawer {...props} width={drawerWidth} style={{ position: "absolute" }}>
           <div
-            style={{ touchAction: "none" }}
             draggable
             className={classes.sidebar_dragger}
             onTouchStart={(e: ReactTouchEvent<HTMLDivElement>) =>
@@ -110,7 +110,14 @@ const Toolbar: FC<ToolbarProps> = ({
               handleMousedown(e, "mouse")
             }
           />
-          {children}
+          <button className={classes.calculator_button}>
+            {drawerWidth && drawerWidth > 300 ? (
+              "Switch Mode"
+            ) : (
+              <SyncOutlined size={32} />
+            )}
+          </button>
+          <Content width={drawerWidth} />
         </Drawer>
       </div>
     </div>
