@@ -3,19 +3,21 @@ import classes from "./Canvas.module.css";
 import Toolbar from "components/Toolbar";
 import { ScreenSizes } from "utils/calc";
 import { ButtonContext } from "context";
+import Board from "components/Board";
+import type { AsyPadActions } from "asypad";
 
 const Canvas: FC<{}> = () => {
   const main = useRef<HTMLDivElement | null>(null);
-  const [currentButton, setCurrentButton] = useState<string>("Move");
+  const [currentButton, setCurrentButton] = useState<AsyPadActions>("Move");
 
   return (
     <ButtonContext.Provider
       value={{ current: currentButton, setCurrent: setCurrentButton }}
     >
       <div ref={main} className={classes.main}>
-        <svg className={classes.canvas}>
-          <text>Content</text>
-        </svg>
+        <div className={classes.canvas}>
+          <Board />
+        </div>
         <Toolbar
           minWidth={{ number: 100, unit: ScreenSizes.PX }}
           maxWidth={{ number: 50, unit: ScreenSizes.VW }}

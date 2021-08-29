@@ -6,15 +6,14 @@ import {
   MouseEvent as ReactMouseEvent,
   TouchEvent as ReactTouchEvent,
   MutableRefObject,
+  useRef,
 } from "react";
 import { Drawer, DrawerProps } from "antd";
 import classes from "./index.module.css";
 import { ScreenSizes, pxToViewportLength } from "utils/calc";
-import { isTouchEvent } from "utils/events";
+import { isTouchEvent, isReactTouchEvent } from "utils/events";
 import Content from "./Content";
 import { SyncOutlined } from "@ant-design/icons";
-
-let isResizing = false;
 
 export type ToolbarDimension = { number: number; unit: ScreenSizes };
 
@@ -31,6 +30,8 @@ const Toolbar: FC<ToolbarProps> = ({
   mainRef,
   ...props
 }) => {
+  const isResizing = useRef<boolean>(false);
+
   const getLength = (value: ToolbarDimension): number => {
     return pxToViewportLength(value.number, value.unit, mainRef?.current);
   };
@@ -39,7 +40,7 @@ const Toolbar: FC<ToolbarProps> = ({
     Math.max(Math.min(getLength(maxWidth), width), getLength(minWidth));
 
   const [drawerWidth, setDrawerWidth] = useState<number | undefined>(undefined);
-  const [showPoints, setShowPoints] = useState<boolean>(false);
+  //const [showPoints, setShowPoints] = useState<boolean>(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cbHandleMouseMove = useCallback(handleMousemove, []);
@@ -53,11 +54,11 @@ const Toolbar: FC<ToolbarProps> = ({
   }, []);
 
   function handleMouseup() {
-    if (!isResizing) {
+    if (!isResizing.current) {
       return;
     }
 
-    isResizing = false;
+    isResizing.current = false;
     document.removeEventListener("mousemove", cbHandleMouseMove);
     document.removeEventListener("mouseup", cbHandleMouseUp);
     document.removeEventListener("touchmove", cbHandleMouseMove);
@@ -67,20 +68,24 @@ const Toolbar: FC<ToolbarProps> = ({
   function handleMousedown(
     e:
       | ReactMouseEvent<HTMLDivElement, MouseEvent>
-      | ReactTouchEvent<HTMLDivElement>,
-    type: "touch" | "mouse"
+      | ReactTouchEvent<HTMLDivElement>
   ) {
-    if (type === "mouse") e.preventDefault();
+    const isTouch = isReactTouchEvent(e);
+
+    if (!isTouch) {
+      if (e.button !== 0) return;
+      e.preventDefault();
+    }
     e.stopPropagation();
 
-    if (type === "mouse") {
+    if (!isTouch) {
       document.addEventListener("mousemove", cbHandleMouseMove);
       document.addEventListener("mouseup", cbHandleMouseUp);
-    } else if (type === "touch") {
+    } else {
       document.addEventListener("touchmove", cbHandleMouseMove);
       document.addEventListener("touchend", cbHandleMouseUp);
     }
-    isResizing = true;
+    isResizing.current = true;
   }
 
   function handleMousemove(e: MouseEvent | TouchEvent) {
@@ -103,12 +108,8 @@ const Toolbar: FC<ToolbarProps> = ({
           <div
             draggable
             className={classes.sidebar_dragger}
-            onTouchStart={(e: ReactTouchEvent<HTMLDivElement>) =>
-              handleMousedown(e, "touch")
-            }
-            onMouseDown={(e: ReactMouseEvent<HTMLDivElement, MouseEvent>) =>
-              handleMousedown(e, "mouse")
-            }
+            onTouchStart={handleMousedown}
+            onMouseDown={handleMousedown}
           />
           <button className={classes.calculator_button}>
             {drawerWidth && drawerWidth > 300 ? (
@@ -117,7 +118,10 @@ const Toolbar: FC<ToolbarProps> = ({
               <SyncOutlined size={32} />
             )}
           </button>
-          <Content width={drawerWidth} />
+          <Content
+            width={drawerWidth}
+            wide={!!drawerWidth && drawerWidth > 300}
+          />
         </Drawer>
       </div>
     </div>
